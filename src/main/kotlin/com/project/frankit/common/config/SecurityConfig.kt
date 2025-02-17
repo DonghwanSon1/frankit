@@ -27,7 +27,7 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/transfer/**").authenticated()
+//                    .requestMatchers("/transfer/**").authenticated()
                     .anyRequest().permitAll()
             }
             .addFilterBefore(
