@@ -27,7 +27,7 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
-        type.descriptor.sql.BasicBinder: TRACE
+        orm.jdbc.bind: TRACE
 
 jwt:
   secret: Dp9rK6hWy3ZlBp4Sj5FvRu7XyQ8tYsN4Vc5GqKn8HtXrJcVqPiM
