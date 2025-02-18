@@ -3,7 +3,9 @@ package com.project.frankit.common.authority
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.common.response.CustomMember
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -62,7 +64,7 @@ class JwtTokenProvider {
         // 권한 정보 추출
         val authorities: Collection<GrantedAuthority> = (auth as String)
             .split(",")
-            .map { SimpleGrantedAuthority(it) }
+            .map { SimpleGrantedAuthority("ROLE_$it") }
 
         val principal: UserDetails = CustomMember(userId.toString().toLong(), claims.subject, "", authorities)
 

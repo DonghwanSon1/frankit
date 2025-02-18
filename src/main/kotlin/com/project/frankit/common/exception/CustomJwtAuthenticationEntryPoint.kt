@@ -9,7 +9,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
 @Component
-class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
+class CustomJwtAuthenticationEntryPoint : AuthenticationEntryPoint {
   private val objectMapper = ObjectMapper()
 
   override fun commence(

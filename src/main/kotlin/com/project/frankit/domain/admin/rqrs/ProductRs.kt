@@ -1,9 +1,12 @@
-package com.project.frankit.domain.product.rqrs
+package com.project.frankit.domain.admin.rqrs
 
-import com.project.frankit.domain.product.enums.Status
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 
-data class ProductRq(
+data class ProductRs(
+
+    @Schema(description = "상품 sn")
+    val sn: Long,
 
     @Schema(description = "상품 이름")
     val name: String,
@@ -12,13 +15,15 @@ data class ProductRq(
     val description: String,
 
     @Schema(description = "상품 가격")
-    val price: Int,
+    val price: Long,
 
     @Schema(description = "상품 배송비")
-    val shippingFee: Int,
+    val shippingFee: Long,
 
     @Schema(description = "상품 상태")
-    val status: Status,
+    val status: String,
 
-    ) {
+    @Schema(description = "상품 등록일")
+    val registrationDate: LocalDateTime,
+) {
 }

@@ -2,7 +2,9 @@ package com.project.frankit.common.config
 
 import com.project.frankit.common.authority.JwtAuthenticationFilter
 import com.project.frankit.common.authority.JwtTokenProvider
-import com.project.frankit.common.exception.JwtAuthenticationEntryPoint
+import com.project.frankit.common.exception.CustomAccessDeniedHandler
+import com.project.frankit.common.exception.CustomJwtAuthenticationEntryPoint
+import com.project.frankit.domain.member.enums.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -17,7 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
-    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
+    private val customJwtAuthenticationEntryPoint: CustomJwtAuthenticationEntryPoint,
+    private val customAccessDeniedHandler: CustomAccessDeniedHandler
 ) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -27,7 +30,8 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-//                    .requestMatchers("/transfer/**").authenticated()
+                    .requestMatchers("/product/**").authenticated()
+                    .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name, Role.FRANCHISE_OWNER.name)
                     .anyRequest().permitAll()
             }
             .addFilterBefore(
@@ -35,7 +39,8 @@ class SecurityConfig(
                 UsernamePasswordAuthenticationFilter::class.java
             )
             .exceptionHandling {
-                it.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                it.accessDeniedHandler(customAccessDeniedHandler)
+                it.authenticationEntryPoint(customJwtAuthenticationEntryPoint)
             }
             .headers {
                 it.frameOptions{ it.sameOrigin() }

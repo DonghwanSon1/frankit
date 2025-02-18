@@ -1,5 +1,7 @@
-package com.project.frankit.domain.product.entity
+package com.project.frankit.domain.product.productOption
 
+import com.project.frankit.domain.admin.rqrs.ProductOptionRq
+import com.project.frankit.domain.product.product.Product
 import jakarta.persistence.*
 
 @Entity
@@ -20,4 +22,13 @@ class ProductOption(
     @Column(name = "additional_price", nullable = false)
     val additionalPrice: Long,
 ) {
+    companion object {
+        fun createProductOption(product: Product, rq: ProductOptionRq): ProductOption {
+            return ProductOption(
+                product = product,
+                name = rq.optionName,
+                additionalPrice = rq.additionalPrice
+            )
+        }
+    }
 }
