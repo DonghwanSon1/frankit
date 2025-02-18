@@ -1,7 +1,6 @@
 package com.project.frankit.domain.product.product
 
-import com.project.frankit.domain.product.entity.QProduct
-import com.project.frankit.domain.product.entity.QProductOption
+import com.project.frankit.domain.product.productOption.QProductOption
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 

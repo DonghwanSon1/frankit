@@ -1,8 +1,8 @@
 package com.project.frankit.domain.member
 
 
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 @Transactional(readOnly = true)
@@ -15,7 +15,7 @@ class MemberCRUD(
    */
   // 회원 저장
   @Transactional
-  fun appendUser(member: Member): Member {
+  fun appendMember(member: Member): Member {
     return memberRepository.save(member)
   }
 

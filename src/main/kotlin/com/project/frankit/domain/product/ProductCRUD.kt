@@ -1,6 +1,8 @@
 package com.project.frankit.domain.product
 
 
+import com.project.frankit.common.exception.CommonException
+import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.product.ProductRepository
 import com.project.frankit.domain.product.productOption.ProductOption
@@ -28,5 +30,16 @@ class ProductCRUD(
   /**
    * find
    */
+  fun findByProductSn(productSn: Long): Product {
+    return productRepository.findById(productSn).orElseThrow { throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT) }
+  }
+
+  /**
+   * update
+   */
+  @Transactional
+  fun updateProduct(updateProduct: Product) {
+    productRepository.save(updateProduct)
+  }
 
 }

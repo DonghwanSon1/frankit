@@ -1,5 +1,6 @@
 package com.project.frankit.domain.product.product
 
+import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
 import com.project.frankit.domain.admin.rqrs.ProductRq
 import com.project.frankit.domain.product.enums.Status
 import jakarta.persistence.*
@@ -40,7 +41,7 @@ class Product(
     ) {
 
     companion object {
-        fun createProduct(rq: ProductRq): Product {
+        fun createProduct(rq: ProductAndOptionRq): Product {
             return Product(
                 name = rq.name,
                 description = rq.description,
@@ -51,5 +52,19 @@ class Product(
                 registrationDate = LocalDateTime.now()
             )
         }
+    }
+
+    fun updateProduct(rq: ProductRq): Product {
+        return Product(
+            sn = this.sn,
+            name = rq.name ?: this.name,
+            description = rq.description ?: this.description,
+            price = rq.price ?: this.price,
+            shippingFee = rq.shippingFee ?: this.shippingFee,
+            status = rq.status?.value ?: this.status,
+            isDelete = this.isDelete,
+            registrationDate = this.registrationDate,
+            deleteDate = this.deleteDate
+        )
     }
 }

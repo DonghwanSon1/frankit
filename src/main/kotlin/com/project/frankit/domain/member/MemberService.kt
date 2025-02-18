@@ -35,7 +35,7 @@ class MemberService(
     if (member != null) throw CommonException(CommonExceptionCode.DUPLICATE_ID)
 
     member = Member.createMember(memberRq, passwordEncoder.encode(memberRq.password))
-    memberCRUD.appendUser(member)
+    memberCRUD.appendMember(member)
 
     return "회원가입이 완료되었습니다."
   }
