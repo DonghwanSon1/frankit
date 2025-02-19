@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class ProductOptionRq(
 
+    @Schema(description = "상품 옵션 sn")
+    val optionSn: Long? = null,
+
     @Schema(description = "상품 옵션 이름")
     val optionName: String,
 

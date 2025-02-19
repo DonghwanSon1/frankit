@@ -31,4 +31,13 @@ class ProductOption(
             )
         }
     }
+
+    fun updateProductOption(rq: ProductOptionRq): ProductOption {
+        return ProductOption(
+            sn = this.sn,
+            product = this.product,
+            name = rq.optionName,
+            additionalPrice = rq.additionalPrice
+        )
+    }
 }

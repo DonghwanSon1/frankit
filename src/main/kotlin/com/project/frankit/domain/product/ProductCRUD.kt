@@ -24,12 +24,22 @@ class ProductCRUD(
 ) {
 
   /**
-   * append
+   * append / update
    */
   @Transactional
   fun saveProductAndProductOptions(productEntity: Product, productOptionEntities: List<ProductOption>) {
     productRepository.save(productEntity)
     productOptionRepository.saveAll(productOptionEntities)
+  }
+
+  @Transactional
+  fun saveProduct(updateProduct: Product) {
+    productRepository.save(updateProduct)
+  }
+
+  @Transactional
+  fun saveAllProductOptions(productOptionList: List<ProductOption>) {
+    productOptionRepository.saveAll(productOptionList)
   }
 
 
@@ -45,8 +55,8 @@ class ProductCRUD(
     return productRepository.searchProductList(productName, pageable)
   }
 
-  fun findProductOptionAllByProductSn(productSn: Long): List<ProductOption>? {
-    return productOptionRepository.findAllByProductSn(productSn)
+  fun findProductOptionAllByProduct(product: Product): List<ProductOption> {
+    return productOptionRepository.findAllByProduct(product)
   }
 
   fun findSelectOptionAll(): List<SelectOptionRs> {
@@ -54,13 +64,4 @@ class ProductCRUD(
       SelectOptionRs(name = it.name)
     }
   }
-
-  /**
-   * update
-   */
-  @Transactional
-  fun updateProduct(updateProduct: Product) {
-    productRepository.save(updateProduct)
-  }
-
 }
