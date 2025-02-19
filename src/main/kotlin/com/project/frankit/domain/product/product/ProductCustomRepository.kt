@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable
 
 interface ProductCustomRepository {
 
-  fun searchProduct(productName: String?, pageable: Pageable): Page<ProductListRs>
+  fun searchProductList(productName: String?, pageable: Pageable): Page<ProductListRs>
 }

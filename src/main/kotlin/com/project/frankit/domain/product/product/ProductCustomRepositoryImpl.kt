@@ -16,7 +16,7 @@ class ProductCustomRepositoryImpl(private val queryFactory: JPAQueryFactory) : P
     private val productOption: QProductOption = QProductOption.productOption
 
 
-    override fun searchProduct(productName: String?, pageable: Pageable): Page<ProductListRs> {
+    override fun searchProductList(productName: String?, pageable: Pageable): Page<ProductListRs> {
         val builder = BooleanBuilder()
         if (!productName.isNullOrEmpty()) builder.and(product.name.like("%$productName%"))
 
@@ -47,5 +47,4 @@ class ProductCustomRepositoryImpl(private val queryFactory: JPAQueryFactory) : P
 
         return PageImpl(results, pageable, count)
     }
-
 }

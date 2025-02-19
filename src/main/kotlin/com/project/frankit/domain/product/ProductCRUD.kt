@@ -33,14 +33,17 @@ class ProductCRUD(
   /**
    * find
    */
-  fun findByProductSn(productSn: Long): Product {
-    return productRepository.findById(productSn).orElseThrow {
+  fun findProductByProductSn(productSn: Long): Product {
+    return productRepository.findBySnAndIsDelete(productSn, false) ?:
       throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT)
-    }
   }
 
-  fun searchProduct(productName: String?, pageable: Pageable): Page<ProductListRs> {
-    return productRepository.searchProduct(productName, pageable)
+  fun searchProductList(productName: String?, pageable: Pageable): Page<ProductListRs> {
+    return productRepository.searchProductList(productName, pageable)
+  }
+
+  fun findProductOptionAllByProductSn(productSn: Long): List<ProductOption>? {
+    return productOptionRepository.findAllByProductSn(productSn)
   }
 
   /**
