@@ -3,11 +3,13 @@ package com.project.frankit.domain.product
 
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
+import com.project.frankit.domain.admin.rqrs.SelectOptionRs
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.product.ProductRepository
 import com.project.frankit.domain.product.productOption.ProductOption
 import com.project.frankit.domain.product.productOption.ProductOptionRepository
 import com.project.frankit.domain.product.rqrs.ProductListRs
+import com.project.frankit.domain.product.selectOption.SelectOptionRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 class ProductCRUD(
   private val productRepository: ProductRepository,
   private val productOptionRepository: ProductOptionRepository,
+  private val selectOptionRepository: SelectOptionRepository
 ) {
 
   /**
@@ -44,6 +47,12 @@ class ProductCRUD(
 
   fun findProductOptionAllByProductSn(productSn: Long): List<ProductOption>? {
     return productOptionRepository.findAllByProductSn(productSn)
+  }
+
+  fun findSelectOptionAll(): List<SelectOptionRs> {
+    return selectOptionRepository.findAll().map {
+      SelectOptionRs(name = it.name)
+    }
   }
 
   /**

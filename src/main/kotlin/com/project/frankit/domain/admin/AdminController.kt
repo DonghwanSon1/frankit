@@ -5,6 +5,7 @@ import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.common.response.BaseResponse
 import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
 import com.project.frankit.domain.admin.rqrs.ProductRq
+import com.project.frankit.domain.admin.rqrs.SelectOptionRs
 import com.project.frankit.domain.product.ProductService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -38,6 +39,12 @@ class AdminController(
   fun deleteProduct(@PathVariable productSn: Long): BaseResponse<Unit> {
     val result: String = productService.deleteProduct(productSn)
     return BaseResponse(message = result)
+  }
+
+  @GetMapping("/select-option")
+  @Operation(summary = "선택 옵션 리스트 조회", description = "선택 옵션 리스트 조회한다.")
+  fun searchSelectOptionList(): BaseResponse<List<SelectOptionRs>> {
+    return BaseResponse(data = productService.searchSelectOptionList())
   }
 
 

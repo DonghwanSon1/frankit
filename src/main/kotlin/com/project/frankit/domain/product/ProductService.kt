@@ -4,6 +4,7 @@ package com.project.frankit.domain.product
 import com.project.frankit.common.response.SuccessMessages
 import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
 import com.project.frankit.domain.admin.rqrs.ProductRq
+import com.project.frankit.domain.admin.rqrs.SelectOptionRs
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.productOption.ProductOption
 import com.project.frankit.domain.product.rqrs.ProductListRs
@@ -42,6 +43,10 @@ class ProductService(
     val productOptionList: List<ProductOption>? = productCRUD.findProductOptionAllByProductSn(productSn)
 
     return ProductRs.createProductRs(product, productOptionList)
+  }
+
+  fun searchSelectOptionList(): List<SelectOptionRs> {
+    return productCRUD.findSelectOptionAll()
   }
 
 
