@@ -1,4 +1,4 @@
-package com.project.frankit.domain.admin.rqrs
+package com.project.frankit.domain.product.rqrs
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime

@@ -6,6 +6,9 @@ import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
 import com.project.frankit.domain.admin.rqrs.ProductRq
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.productOption.ProductOption
+import com.project.frankit.domain.product.rqrs.ProductListRs
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -25,6 +28,11 @@ class ProductService(
     productCRUD.saveProductAndProductOptions(productEntity, productOptionEntities)
 
     return SuccessMessages.CREATE_PRODUCT.message
+  }
+
+
+  fun searchProduct(productName: String?, pageable: Pageable): Page<ProductListRs> {
+    return productCRUD.searchProduct(productName, pageable)
   }
 
 
