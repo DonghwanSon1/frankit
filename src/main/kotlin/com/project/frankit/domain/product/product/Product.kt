@@ -30,13 +30,13 @@ class Product(
     val status: Int = Status.ON_SALE.value,
 
     @Column(name = "is_delete", nullable = false)
-    val isDelete: Boolean,
+    var isDelete: Boolean,
 
     @Column(name = "registration_date", nullable = false)
     val registrationDate: LocalDateTime,
 
     @Column(name = "delete_date", nullable = true)
-    val deleteDate: LocalDateTime? = null,
+    var deleteDate: LocalDateTime? = null,
 
     ) {
 

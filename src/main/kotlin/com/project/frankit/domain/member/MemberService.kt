@@ -5,6 +5,7 @@ import com.project.frankit.common.authority.JwtTokenProvider
 import com.project.frankit.common.authority.TokenInfo
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
+import com.project.frankit.common.response.SuccessMessages
 import com.project.frankit.domain.member.rqrs.LoginRq
 import com.project.frankit.domain.member.rqrs.MemberRq
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -37,7 +38,7 @@ class MemberService(
     member = Member.createMember(memberRq, passwordEncoder.encode(memberRq.password))
     memberCRUD.appendMember(member)
 
-    return "회원가입이 완료되었습니다."
+    return SuccessMessages.SIGN_UP.message
   }
 
   /**

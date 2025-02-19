@@ -29,10 +29,16 @@ class AdminController(
   @PatchMapping("/product/{productSn}")
   @Operation(summary = "상품 수정", description = "상품만 수정 합니다.")
   fun updateProduct(@PathVariable productSn: Long, @RequestBody rq: ProductRq): BaseResponse<Unit> {
-    val result: String = productService.updateProductAndProductOption(productSn, rq)
+    val result: String = productService.updateProduct(productSn, rq)
     return BaseResponse(message = result)
   }
 
+  @DeleteMapping("/product/{productSn}")
+  @Operation(summary = "상품 삭제", description = "상품만 삭제 합니다. (소프트 삭제)")
+  fun deleteProduct(@PathVariable productSn: Long): BaseResponse<Unit> {
+    val result: String = productService.deleteProduct(productSn)
+    return BaseResponse(message = result)
+  }
 
 
 }

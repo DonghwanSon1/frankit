@@ -31,7 +31,9 @@ class ProductCRUD(
    * find
    */
   fun findByProductSn(productSn: Long): Product {
-    return productRepository.findById(productSn).orElseThrow { throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT) }
+    return productRepository.findById(productSn).orElseThrow {
+      throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT)
+    }
   }
 
   /**
