@@ -21,6 +21,9 @@ class ProductOption(
 
     @Column(name = "additional_price", nullable = false)
     val additionalPrice: Long,
+
+    @Column(name = "is_delete", nullable = false)
+    var isDelete: Boolean = false,
 ) {
     companion object {
         fun createProductOption(product: Product, rq: ProductOptionRq): ProductOption {

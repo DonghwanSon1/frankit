@@ -57,5 +57,12 @@ class AdminController(
     return BaseResponse(message = result)
   }
 
+  @DeleteMapping("/product-option/{productOptionSn}")
+  @Operation(summary = "상품 옵션 삭제", description = "상품 옵션을 삭제 합니다.(소프트 삭제)")
+  fun deleteProductOption(@PathVariable productOptionSn: Long): BaseResponse<Unit> {
+    val result: String = productService.deleteProductOption(productOptionSn)
+    return BaseResponse(message = result)
+  }
+
 
 }

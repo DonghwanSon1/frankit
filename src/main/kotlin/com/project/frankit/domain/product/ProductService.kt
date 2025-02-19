@@ -47,7 +47,6 @@ class ProductService(
   }
 
 
-
   fun updateProduct(productSn: Long, rq: ProductRq): String {
     val product: Product = productCRUD.findProductByProductSn(productSn)
     productCRUD.saveProduct(product.updateProduct(rq))
@@ -61,7 +60,12 @@ class ProductService(
       isDelete = true
       deleteDate = LocalDateTime.now()
     }
+
+    val productOptionList: List<ProductOption> = productCRUD.findProductOptionAllByProduct(product)
+    productOptionList.forEach { this.deleteProductOption(it.sn!!) }
+
     productCRUD.saveProduct(product)
+    productCRUD.saveAllProductOptions(productOptionList)
 
     return SuccessMessages.DELETE_PRODUCT.message
   }
@@ -89,6 +93,14 @@ class ProductService(
     productCRUD.saveAllProductOptions(saveEntities)
 
     return SuccessMessages.UPDATE_PRODUCT_OPTION.message
+  }
+
+  fun deleteProductOption(productOptionSn: Long): String {
+    val productOption: ProductOption = productCRUD.findProductOptionByProductOptionSn(productOptionSn)
+      .apply { isDelete = true }
+
+    productCRUD.saveProductOption(productOption)
+    return SuccessMessages.DELETE_PRODUCT_OPTION.message
   }
 
 

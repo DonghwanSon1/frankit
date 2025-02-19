@@ -18,5 +18,6 @@ enum class CommonExceptionCode(
     CONSTRAINTS_ERROR(HttpStatus.BAD_REQUEST, "데이터 처리 중 오류가 발생했습니다. 입력값을 확인한 후 다시 시도해주세요."),
     PRODUCT_OPTION_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "상품 옵션을 최대 3개까지 가능합니다."),
     NOT_EXIST_PRODUCT(HttpStatus.BAD_REQUEST, "존재 하지 않는 상품입니다."),
+    NOT_EXIST_PRODUCT_OPTION(HttpStatus.BAD_REQUEST, "존재 하지 않는 상품 옵션 입니다."),
 
 }

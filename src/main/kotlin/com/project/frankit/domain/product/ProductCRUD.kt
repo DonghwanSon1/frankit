@@ -42,6 +42,12 @@ class ProductCRUD(
     productOptionRepository.saveAll(productOptionList)
   }
 
+  @Transactional
+  fun saveProductOption(productOption: ProductOption) {
+    productOptionRepository.save(productOption)
+  }
+
+
 
   /**
    * find
@@ -56,12 +62,17 @@ class ProductCRUD(
   }
 
   fun findProductOptionAllByProduct(product: Product): List<ProductOption> {
-    return productOptionRepository.findAllByProduct(product)
+    return productOptionRepository.findAllByProductAndIsDelete(product, false)
   }
 
   fun findSelectOptionAll(): List<SelectOptionRs> {
     return selectOptionRepository.findAll().map {
       SelectOptionRs(name = it.name)
     }
+  }
+
+  fun findProductOptionByProductOptionSn(productOptionSn: Long): ProductOption {
+    return productOptionRepository.findBySnAndIsDelete(productOptionSn, false) ?:
+      throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT_OPTION)
   }
 }

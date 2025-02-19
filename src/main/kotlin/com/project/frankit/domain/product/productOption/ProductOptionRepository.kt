@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProductOptionRepository: JpaRepository<ProductOption, Long> {
 
-  fun findAllByProduct(product: Product): List<ProductOption>
+  fun findAllByProductAndIsDelete(product: Product, isDelete: Boolean): List<ProductOption>
+  fun findBySnAndIsDelete(sn: Long, isDelete: Boolean): ProductOption?
 }
