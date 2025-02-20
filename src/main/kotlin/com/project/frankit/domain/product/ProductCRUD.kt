@@ -4,12 +4,12 @@ package com.project.frankit.domain.product
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.domain.admin.rqrs.ProductOptionListRs
-import com.project.frankit.domain.admin.rqrs.SelectOptionRs
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.product.ProductRepository
 import com.project.frankit.domain.product.productOption.ProductOption
 import com.project.frankit.domain.product.productOption.ProductOptionRepository
 import com.project.frankit.domain.product.rqrs.ProductListRs
+import com.project.frankit.domain.product.selectOption.SelectOption
 import com.project.frankit.domain.product.selectOption.SelectOptionRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -66,10 +66,8 @@ class ProductCRUD(
     return productOptionRepository.findAllByProductAndIsDelete(product, false)
   }
 
-  fun findSelectOptionAll(): List<SelectOptionRs> {
-    return selectOptionRepository.findAll().map {
-      SelectOptionRs(name = it.name)
-    }
+  fun findSelectOptionAll(): List<SelectOption> {
+    return selectOptionRepository.findAll()
   }
 
   fun findProductOptionByProductOptionSn(productOptionSn: Long): ProductOption {
