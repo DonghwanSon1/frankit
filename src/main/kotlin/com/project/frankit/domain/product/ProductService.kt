@@ -4,10 +4,7 @@ package com.project.frankit.domain.product
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.common.response.SuccessMessages
-import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
-import com.project.frankit.domain.admin.rqrs.ProductOptionRq
-import com.project.frankit.domain.admin.rqrs.ProductRq
-import com.project.frankit.domain.admin.rqrs.SelectOptionRs
+import com.project.frankit.domain.admin.rqrs.*
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.productOption.ProductOption
 import com.project.frankit.domain.product.rqrs.ProductListRs
@@ -68,6 +65,11 @@ class ProductService(
     productCRUD.saveAllProductOptions(productOptionList)
 
     return SuccessMessages.DELETE_PRODUCT.message
+  }
+
+
+  fun searchProductOptionList(productName: String?, pageable: Pageable): Page<ProductOptionListRs> {
+    return productCRUD.searchProductOptionList(productName, pageable)
   }
 
 

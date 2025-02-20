@@ -1,5 +1,6 @@
 package com.project.frankit.domain.product.product
 
+import com.project.frankit.domain.admin.rqrs.ProductOptionListRs
 import com.project.frankit.domain.product.productOption.QProductOption
 import com.project.frankit.domain.product.rqrs.ProductListRs
 import com.querydsl.core.BooleanBuilder
@@ -42,9 +43,48 @@ class ProductCustomRepositoryImpl(private val queryFactory: JPAQueryFactory) : P
 
         val count = queryFactory
             .selectFrom(product)
-            .where(builder)
-            .fetchCount()
+            .where(product.isDelete.isFalse, builder)
+            .fetch().size.toLong()
 
         return PageImpl(results, pageable, count)
+    }
+
+    override fun searchProductOptionList(productName: String?, pageable: Pageable): Page<ProductOptionListRs> {
+        val builder = BooleanBuilder()
+        if (!productName.isNullOrEmpty()) builder.and(product.name.like("%$productName%"))
+
+        val results = queryFactory
+            .select(
+                Projections.fields(
+                    ProductOptionListRs::class.java,
+                    product.sn.`as`("productSn"),
+                    product.name.`as`("productName"),
+                    product.status.`as`("_productStatus"),
+                    product.registrationDate.`as`("productRegistrationDate"),
+                    productOption.count().`as`("productOptionCount")
+                )
+            )
+            .from(product)
+            .leftJoin(productOption).on(
+                productOption.product.eq(product),
+                productOption.isDelete.isFalse
+            )
+            .where(
+                product.isDelete.isFalse,
+                builder
+            )
+            .groupBy(product.sn)
+            .orderBy(product.sn.desc())
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
+
+        val count = queryFactory
+            .selectFrom(product)
+            .where(product.isDelete.isFalse,builder)
+            .fetch().size.toLong()
+
+        return PageImpl(results, pageable, count)
+
     }
 }

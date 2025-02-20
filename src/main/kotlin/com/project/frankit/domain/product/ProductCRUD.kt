@@ -3,6 +3,7 @@ package com.project.frankit.domain.product
 
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
+import com.project.frankit.domain.admin.rqrs.ProductOptionListRs
 import com.project.frankit.domain.admin.rqrs.SelectOptionRs
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.product.ProductRepository
@@ -74,5 +75,9 @@ class ProductCRUD(
   fun findProductOptionByProductOptionSn(productOptionSn: Long): ProductOption {
     return productOptionRepository.findBySnAndIsDelete(productOptionSn, false) ?:
       throw CommonException(CommonExceptionCode.NOT_EXIST_PRODUCT_OPTION)
+  }
+
+  fun searchProductOptionList(productName: String?, pageable: Pageable): Page<ProductOptionListRs> {
+    return productRepository.searchProductOptionList(productName, pageable)
   }
 }

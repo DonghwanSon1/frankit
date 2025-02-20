@@ -3,13 +3,13 @@ package com.project.frankit.domain.admin
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.common.response.BaseResponse
-import com.project.frankit.domain.admin.rqrs.ProductAndOptionRq
-import com.project.frankit.domain.admin.rqrs.ProductOptionRq
-import com.project.frankit.domain.admin.rqrs.ProductRq
-import com.project.frankit.domain.admin.rqrs.SelectOptionRs
+import com.project.frankit.domain.admin.rqrs.*
 import com.project.frankit.domain.product.ProductService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -48,6 +48,16 @@ class AdminController(
     return BaseResponse(message = result)
   }
 
+  @GetMapping("/product-option/list")
+  @Operation(summary = "상품 옵션 리스트 조회", description = "상품 옵션 리스트 조회한다.")
+  fun searchProductOptionList(@RequestParam productName: String?,
+                             @PageableDefault(size = 10) pageable: Pageable): BaseResponse<Page<ProductOptionListRs>> {
+    return BaseResponse(data = productService.searchProductOptionList(productName, pageable))
+  }
+
+  // TODO 상품에 속한 옵션 조회 (옵션 sn, 옵션 이름, 옵션 추가가격)
+
+
   @PutMapping("/product-option/{productSn}")
   @Operation(summary = "상품 옵션 수정/생성", description = "상품 옵션 수정 및 생성 합니다.")
   fun updateProductOption(@PathVariable productSn: Long,
@@ -63,6 +73,7 @@ class AdminController(
     val result: String = productService.deleteProductOption(productOptionSn)
     return BaseResponse(message = result)
   }
+
 
 
 }
