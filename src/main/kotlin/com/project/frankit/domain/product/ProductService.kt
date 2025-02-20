@@ -176,7 +176,7 @@ class ProductService(
   }
 
   /**
-   * 상품에 속한 상품 옵션 개별 삭제
+   * 상품에 속한 상품 옵션 개별 삭제 (Soft Delete)
    *
    * - 설명
    *  1. productOptionSn 을 레포지토리 접근 컴포넌트에 전달하여 상품 옵션을 조회한다. - 없을 시 Exception
