@@ -46,11 +46,7 @@ data class ProductRs(
                 status = Status.fromValue(product.status).desc,
                 registrationDate = product.registrationDate,
                 productOptionList = productOptionList?.map {
-                    ProductOptionRs(
-                        optionSn = it.sn!!,
-                        optionName = it.name,
-                        additionalPrice = it.additionalPrice
-                    )
+                    ProductOptionRs.createProductOptionRs(it)
                 }
             )
         }

@@ -1,5 +1,6 @@
 package com.project.frankit.domain.product.rqrs
 
+import com.project.frankit.domain.product.productOption.ProductOption
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class ProductOptionRs(
@@ -14,4 +15,14 @@ data class ProductOptionRs(
     val additionalPrice: Long,
 
     ) {
+
+    companion object {
+        fun createProductOptionRs(productOption: ProductOption): ProductOptionRs {
+            return ProductOptionRs(
+                optionSn = productOption.sn!!,
+                optionName = productOption.name,
+                additionalPrice = productOption.additionalPrice
+            )
+        }
+    }
 }

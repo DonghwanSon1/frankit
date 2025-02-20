@@ -5,6 +5,7 @@ import com.project.frankit.common.exception.CommonExceptionCode
 import com.project.frankit.common.response.BaseResponse
 import com.project.frankit.domain.admin.rqrs.*
 import com.project.frankit.domain.product.ProductService
+import com.project.frankit.domain.product.rqrs.ProductOptionRs
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
@@ -56,6 +57,11 @@ class AdminController(
   }
 
   // TODO 상품에 속한 옵션 조회 (옵션 sn, 옵션 이름, 옵션 추가가격)
+  @GetMapping("/product-option/{productSn}")
+  @Operation(summary = "상품에 속한 옵션 조회", description = "상품에 속한 옵션들을 조회한다.")
+  fun searchProductOption(@PathVariable productSn: Long): BaseResponse<List<ProductOptionRs>> {
+    return BaseResponse(data = productService.searchProductOption(productSn))
+  }
 
 
   @PutMapping("/product-option/{productSn}")

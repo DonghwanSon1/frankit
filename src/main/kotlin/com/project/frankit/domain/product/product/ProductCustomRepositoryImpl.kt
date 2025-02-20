@@ -85,6 +85,5 @@ class ProductCustomRepositoryImpl(private val queryFactory: JPAQueryFactory) : P
             .fetch().size.toLong()
 
         return PageImpl(results, pageable, count)
-
     }
 }

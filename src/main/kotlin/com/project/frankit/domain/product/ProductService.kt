@@ -8,6 +8,7 @@ import com.project.frankit.domain.admin.rqrs.*
 import com.project.frankit.domain.product.product.Product
 import com.project.frankit.domain.product.productOption.ProductOption
 import com.project.frankit.domain.product.rqrs.ProductListRs
+import com.project.frankit.domain.product.rqrs.ProductOptionRs
 import com.project.frankit.domain.product.rqrs.ProductRs
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -70,6 +71,12 @@ class ProductService(
 
   fun searchProductOptionList(productName: String?, pageable: Pageable): Page<ProductOptionListRs> {
     return productCRUD.searchProductOptionList(productName, pageable)
+  }
+
+  fun searchProductOption(productSn: Long): List<ProductOptionRs> {
+    val product: Product = productCRUD.findProductByProductSn(productSn)
+    return productCRUD.findProductOptionAllByProduct(product).map { ProductOptionRs.createProductOptionRs(it) }
+
   }
 
 
