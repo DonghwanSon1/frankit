@@ -4,6 +4,7 @@ import com.project.frankit.common.authority.JwtTokenProvider
 import com.project.frankit.common.authority.TokenInfo
 import com.project.frankit.common.exception.CommonException
 import com.project.frankit.common.exception.CommonExceptionCode
+import com.project.frankit.common.response.SuccessMessages
 import com.project.frankit.domain.member.MemberCRUD
 import com.project.frankit.domain.member.MemberService
 import com.project.frankit.domain.member.enums.Role
@@ -47,7 +48,7 @@ class MemberServiceUnitTest {
     val result = memberService.signUp(memberRq)
 
     // then
-    assertThat(result).isEqualTo("회원가입이 완료되었습니다.")
+    assertThat(result).isEqualTo(SuccessMessages.SIGN_UP.message)
   }
 
   @Test

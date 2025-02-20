@@ -21,7 +21,7 @@ class ProductService(
 ) {
 
   /**
-   * 상품 등록 (상품 옵션 같이 등록 - 선택)
+   * 상품 등록 (상품 옵션 같이 등록)
    *
    * - 설명
    *  1. 클라이언트에서 주는 Rq를 가지고 상품 엔티티를 생성 한다.
@@ -89,10 +89,10 @@ class ProductService(
    *  1. 요청받은 productSn을 레포지토리 접근 컴포넌트에 전달하여 상품을 조회한다. - 없을 시 Exception
    *  1.1 조회 받아온 후 바로 Soft Delete 를 하기위해 isDelete, deleteDate 를 수정한다.
    *  2. 상품을 레포지토리 접근 컴포넌트에 전달하여 상품에 속한 옵션들을 조회한다.
-   *  3. 조회된 상품 옵션들을 상품 옵션 삭제 메서드를 통해 상품 옵션들의 isDelete 를 수정한다. - 없을 시 해당 메서드 호출 X
-   *  4. 레포지토리 접근 컴포넌트에 수정된 상품 옵션들을 전달하여 저장(소프트 삭제)한다.
-   *  5. 레포지토리 접근 컴포넌트에 수정된 상품을 전달하여 저장(소프트 삭제)한다.
-   *  6. 저장(소프트 삭제) 후 성공 메시지를 클라이언트에게 응답한다.
+   *  2.2 조회 받아온 후 바로 Soft Delete 를 하기위해 isDelete 를 수정한다.
+   *  3. 레포지토리 접근 컴포넌트에 수정된 상품 옵션들을 전달하여 저장(소프트 삭제)한다.
+   *  4. 레포지토리 접근 컴포넌트에 수정된 상품을 전달하여 저장(소프트 삭제)한다.
+   *  5. 저장(소프트 삭제) 후 성공 메시지를 클라이언트에게 응답한다.
    */
   fun deleteProduct(productSn: Long): String {
     val product: Product = productCRUD.findProductByProductSn(productSn).apply {
@@ -100,8 +100,9 @@ class ProductService(
       deleteDate = LocalDateTime.now()
     }
 
-    val productOptionList: List<ProductOption> = productCRUD.findProductOptionAllByProduct(product)
-    productOptionList.forEach { this.deleteProductOption(it.sn!!) }
+    val productOptionList: List<ProductOption> = productCRUD.findProductOptionAllByProduct(product).map {
+      it.apply { isDelete = true }
+    }
 
     productCRUD.saveAllProductOptions(productOptionList)
     productCRUD.saveProduct(product)

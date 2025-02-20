@@ -32,11 +32,11 @@ data class ProductRs(
     val registrationDate: LocalDateTime,
 
     @Schema(description = "상품 옵션 리스트")
-    val productOptionList: List<ProductOptionRs>?
+    val productOptionList: List<ProductOptionRs>
 ) {
 
     companion object {
-        fun createProductRs(product: Product, productOptionList: List<ProductOption>?): ProductRs {
+        fun createProductRs(product: Product, productOptionList: List<ProductOption>): ProductRs {
             return ProductRs(
                 sn = product.sn!!,
                 name = product.name,
@@ -45,7 +45,7 @@ data class ProductRs(
                 shippingFee = product.shippingFee,
                 status = Status.fromValue(product.status).desc,
                 registrationDate = product.registrationDate,
-                productOptionList = productOptionList?.map {
+                productOptionList = productOptionList.map {
                     ProductOptionRs.createProductOptionRs(it)
                 }
             )
