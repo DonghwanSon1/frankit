@@ -31,7 +31,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/product/**").authenticated()
-                    .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name, Role.FRANCHISE_OWNER.name)
+                    .requestMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.name, Role.FRANCHISE_OWNER.name)
                     .anyRequest().permitAll()
             }
             .addFilterBefore(

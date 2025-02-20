@@ -49,9 +49,15 @@ dependencies {
 	// Swagger
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
+	// H2
+	implementation("com.h2database:h2")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("io.mockk:mockk:1.13.7")
+	testImplementation("io.mockk:mockk:1.13.10")
+	configurations.all {
+		exclude(group = "org.mockito", module = "mockito-core")
+	}
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	runtimeOnly("com.mysql:mysql-connector-j")
 }
@@ -72,7 +78,7 @@ allOpen {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	jvmArgs(
-		"-XX:+EnableDynamicAgentLoading",
-		"-Xshare:off"
+		"-Xshare:off",
+		"-XX:+EnableDynamicAgentLoading"
 		)
 }

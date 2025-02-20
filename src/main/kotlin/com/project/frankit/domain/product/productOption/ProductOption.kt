@@ -13,7 +13,7 @@ class ProductOption(
     val sn: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_sn", nullable = false, foreignKey = ForeignKey(name = "FK_PRODUCT_OPTION_PRODUCT_SN"))
+    @JoinColumn(name = "product_sn", nullable = false)
     val product: Product,
 
     @Column(name = "name", nullable = false)

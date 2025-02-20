@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /frankit
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:moin;MODE=MYSQL
+    driver-class-name: org.h2.Driver
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        show_sql: false
+        format_sql: true
+        highlight_sql: true
+  h2:
+    console:
+      enabled: true
+      path: '/h2-console'
+
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        orm.jdbc.bind: TRACE
+
+jwt:
+  secret: Dp9rK6hWy3ZlBp4Sj5FvRu7XyQ8tYsN4Vc5GqKn8HtXrJcVqPiM
+  access-token-expire-time: 1800000 # 유효시간 30분
