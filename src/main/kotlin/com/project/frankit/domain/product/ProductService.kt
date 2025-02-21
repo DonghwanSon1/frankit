@@ -132,7 +132,9 @@ class ProductService(
    */
   fun searchProductOption(productSn: Long): List<ProductOptionRs> {
     val product: Product = productCRUD.findProductByProductSn(productSn)
-    return productCRUD.findProductOptionAllByProduct(product).map { ProductOptionRs.createProductOptionRs(it) }
+    return productCRUD.findProductOptionAllByProduct(product).map {
+      ProductOptionRs.createProductOptionRs(it)
+    }
 
   }
 
