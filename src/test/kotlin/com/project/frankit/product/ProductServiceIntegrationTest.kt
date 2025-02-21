@@ -41,6 +41,20 @@ class ProductServiceIntegrationTest @Autowired constructor(
     selectOptionRepository.deleteAll()
   }
 
+  /**
+   * 상품 및 옵션 등록
+   * - given / when / then
+   *    1. 상품 및 옵션 등록 할 Rq를 생성한다.
+   *    2. 상품 등록 메서드를 통해 상품 및 옵션을 등록 요청한다.
+   *    3. 상품 및 옵션 테이블을 각각 조회한 후 Rq와 비교한다.
+   *
+   * - 테스트 확인
+   *    1. 클라이언트에게 응답 주는 메시지가 동일한지 확인.
+   *    2. 상품 저장된게 1개 인지 확인.
+   *    3. 상품 저장된 이름이 Rq 에서 요청한 상품 이름인지 확인.
+   *    4. 상품 옵션 저장된게 2개 인지 확인.
+   *    5. 상품 옵션 저장된 추가 금액이 Rq 에서 요청한 상품 옵션 추가 금액인지 확인.
+   */
   @Test
   fun `상품 및 옵션 등록`() {
     // given
@@ -70,6 +84,19 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(productOptions[0].additionalPrice).isEqualTo(rq.productOption[0].additionalPrice)
   }
 
+  /**
+   * 상품만 등록
+   * - given / when / then
+   *    1. 상품만 등록 할 Rq를 생성한다. - 상품 옵션은 빈배열
+   *    2. 상품 등록 메서드를 통해 상품을 등록 요청한다.
+   *    3. 상품 및 옵션 테이블을 각각 조회한 후 Rq와 비교한다.
+   *
+   * - 테스트 확인
+   *    1. 클라이언트에게 응답 주는 메시지가 동일한지 확인.
+   *    2. 상품 저장된게 1개 인지 확인.
+   *    3. 상품 저장된 이름이 Rq 에서 요청한 상품 이름인지 확인.
+   *    4. 상품 옵션이 저장된게 없는지 확인.
+   */
   @Test
   fun `상품만 등록`() {
     // given
@@ -95,6 +122,22 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(productOptions).hasSize(0)
   }
 
+  /**
+   * 상품 목록 조회 (페이징 처리) - 검색 X
+   * - given / when / then
+   *    1. 다수의 상품들을 먼저 저장한다.
+   *    2. 페이징 처리를 위한 pageable 을 생성한다. - 기본값
+   *    3. 상품 목록 조회 메서드를 통해 상품 목록 조회 요청한다.
+   *    4. 요청한 Rq 와 조회 후 결과값이랑 비교한다.
+   *
+   * - 테스트 확인
+   *    1. pageable 을 (0,10)으로 요청했기에 총 페이지 수가 1인지 확인.
+   *    2. 총 개수가 저장 시 4개 중 1개는 isDelete = true 이기에 3개인지 확인.
+   *    3. result 는 최신순으로 제공되기에 첫번째의 데이터는 마지막으로 저장한 값의 status 의 값과 동일한지 확인.
+   *        - 저장한 [3]은 삭제된 값으로 넣었기에 [2]가 마지막 값
+   *    4. 두번째 데이터와 [1] 데이터와 가격의 값이 동일한지 확인.
+   *    5. 세번째 데이터와 [0] 데이터와 이름이 동일한지 확인.
+   */
   @Test
   fun `상품 목록 조회 (페이징 처리) - 검색 X`() {
     // given
@@ -118,6 +161,19 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result.content[2].name).isEqualTo(saveProduct[0].name)
   }
 
+  /**
+   * 상품 목록 조회 (페이징 처리) - 검색 O
+   * - given / when / then
+   *    1. 다수의 상품들을 먼저 저장한다.
+   *    2. 검색할 상품 이름 값과 페이징 처리를 위한 pageable 을 생성한다. - 기본값
+   *    3. 상품 목록 조회 메서드를 통해 상품 목록 조회 요청한다.
+   *    4. 요청한 Rq 와 조회 후 결과값이랑 비교한다.
+   *
+   * - 테스트 확인
+   *    1. pageable 을 (0,10)으로 요청했기에 총 페이지 수가 1인지 확인.
+   *    2. 조회된 총 개수가 상품 이름이 일치하는 데이터만 조회 결과로 주기 때문에 총 개수 2개 인지 확인.
+   *    3. 각각의 조회 결과에서 각각의 Rq의 상태값 및 이름이 동일한지 확인.
+   */
   @Test
   fun `상품 목록 조회 (페이징 처리) - 검색 O`() {
     // given
@@ -140,6 +196,21 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result.content[1].name).isEqualTo(saveProduct[1].name)
   }
 
+  /**
+   * 상품 상세 조회
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 상품에 속한 다수의 옵션들을 저장한다.
+   *    3. 상품 상세 조회 메서드를 통해 상품 상세 조회 요청한다.
+   *    4. 저장된 데이터와 조회 후 결과값이랑 비교한다.
+   *
+   * - 테스트 확인
+   *    1. 조회된 데이터의 상품 이름이 저장된 상품 이름과 동일한지 확인.
+   *    2. 조회된 데이터의 상품 배송료와 저장된 상품의 배송료가 동일한지 확인.
+   *    3. 조회된 데이터의 상품 옵션 개수가 저장한 상품 옵션 개수와 동일한지 확인.
+   *    4. 조회된 데이터의 상품 옵션 이름이 저장한 상품 옵션 이름과 동일한지 확인.
+   *       - 대표로 [0]값만 확인.
+   */
   @Test
   fun `상품 상세 조회`() {
     // given
@@ -163,6 +234,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result.productOptionList[0].optionName).isEqualTo(saveProductOptions[0].name)
   }
 
+  /**
+   * 상품 상세 조회 - 실패 시
+   * - given / when / then
+   *    1. 여러개의 상품들을 먼저 저장한다.
+   *    2. 삭제된 상품 Sn 을 파라미터로 줄 변수에 담는다.
+   *    3. 상품 상세 조회 메서드를 통해 상품 상세 조회 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품 상세 조회 - 실패 시`() {
     // given
@@ -180,14 +262,28 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT.message)
   }
 
+  /**
+   * 상품 수정 - 상품 단건
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 저장된 상품 Sn과 수정 요청 보낼 Rq 를 생성한다.
+   *    3. 상품 수정 메서드를 통해 상품 수정 요청한다.
+   *    4. 데이터를 조회하여 수정된 값과 일치하는지 확인 및 성공 메시지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 성공 메시지가 동일한지 확인.
+   *    2. 가져온 데이터와 수정 요청한 Rq 와 이름이 동일한지 확인.
+   *    3. 가져온 데이터와 수정 요청한 Rq 와 설명이 동일한지 확인.
+   *    4. 상태값은 수정 요청 시 제공하지 않았으니 기존값 그대로 인지 확인
+   */
   @Test
   fun `상품 수정 - 상품 단건`() {
     // given
-    val rq: ProductRq = ProductRq("상품 수정", "수정 설명", 2000, 0)
     val saveProduct: Product = productRepository.save(
       Product(name = "가나 상품", description = "상품 설명1", price = 10000, shippingFee = 1000, status = 1, isDelete = false, registrationDate = LocalDateTime.now(), deleteDate = null)
     )
     val productSn: Long = saveProduct.sn!!
+    val rq: ProductRq = ProductRq("상품 수정", "수정 설명", 2000, 0)
 
     // when
     val result = productService.updateProduct(productSn, rq)
@@ -200,6 +296,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(product[0].status).isEqualTo(Status.ON_SALE.value)
   }
 
+  /**
+   * 상품 수정 - 실패 시
+   * - given / when / then
+   *    1. 아무 상품도 저장하지 않는다.
+   *    2. 없는 상품 Sn 과 임의의 수정 요청 할 Rq 를 생성한다.
+   *    3. 상품 수정 메서드를 통해 상품 수정 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품 수정 - 실패 시`() {
     // given
@@ -214,6 +321,21 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT.message)
   }
 
+  /**
+   * 상품 삭제 - 상품에 속한 옵션도 같이 삭제 (Soft Delete)
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 상품에 속한 하나의 상품 옵션을 저장한다.
+   *    3. 요청할 파라미터인 저장된 상품 Sn 을 변수에 담는다.
+   *    4. 상품 삭제 메서드를 통해 상품 삭제 요청한다.
+   *    5. 소프트 삭제이기에 데이터를 가져와 isDelete 가 true 로 변경되었는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 성공메시지가 동일한지 확인.
+   *    2. 상품의 isDelete = true 인지 확인.
+   *    3. 상품의 deleteDate 가 넣어졌는지 (Null 이 아닌지) 확인.
+   *    4. 상품에 속한 옵션도 IsDelete = true 인지 확인.
+   */
   @Test
   fun `상품 삭제 - 상품에 속한 옵션도 같이 삭제 (Soft Delete)`() {
     // given
@@ -237,6 +359,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(productOptions[0].isDelete).isTrue()
   }
 
+  /**
+   * 상품 삭제 - 실패 시
+   * - given / when / then
+   *    1. 아무 상품도 저장하지 않는다.
+   *    2. 파라미터로 요청 할 없는 상품 Sn 을 변수에 담는다.
+   *    3. 상품 삭제 메서드를 통해 상품 삭제 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품 삭제 - 실패 시`() {
     // given
@@ -250,6 +383,20 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT.message)
   }
 
+  /**
+   * 상품 옵션 목록 조회 - 검색 X
+   * - given / when / then
+   *    1. 여러개의 상품들을 먼저 저장한다.
+   *    2. 여러개의 상품들에 속한 각각의 상품 옵션들을 저장한다.
+   *    3. 파라미터로 제공 할 pageable 을 기본값으로 생성한다.
+   *    4. 상품 옵션 목록 메서드를 통해 상품 옵션 목록 요청한다.
+   *    5. 결과로 주는 데이터와 미리 저장한 데이터가 동일한지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. Pageable(0,10) 이고, 저장한 상품이 3개(하나는 삭제된 값으로 저장) 이니 페이지 개수는 1인거 확인.
+   *    2. 결과값에서 주는 총 데이터가 3개(하나는 삭제된 값으로 저장) 인지 확인.
+   *    3. 결과값에서 주는 각 상품들에 속한 옵션의 개수(productOptionCount)와 저장된 각각의 상품 옵션 개수가 동일한지 확인.
+   */
   @Test
   fun `상품 옵션 목록 조회 - 검색 X`() {
     // given
@@ -282,6 +429,20 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result.content[2].productOptionCount).isEqualTo(2)
   }
 
+  /**
+   * 상품 옵션 목록 조회 - 검색 O
+   * - given / when / then
+   *    1. 여러개의 상품들을 먼저 저장한다.
+   *    2. 여러개의 상품들에 속한 각각의 상품 옵션들을 저장한다.
+   *    3. 검색할 상품 이름과 파라미터로 제공 할 pageable 을 기본값으로 생성한다.
+   *    4. 상품 옵션 목록 메서드를 통해 상품 옵션 목록 요청한다.
+   *    5. 결과로 주는 데이터와 미리 저장한 데이터가 동일한지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. Pageable(0,10) 이고, 저장한 상품이 3개(하나는 삭제된 값으로 저장) 이니 페이지 개수는 1인거 확인.
+   *    2. 결과값에서 주는 총 데이터가 2개(상품 이름으로 조회하기 때문) 인지 확인.
+   *    3. 결과값에서 주는 각 상품들에 속한 옵션의 개수(productOptionCount)와 저장된 각각의 상품 옵션 개수가 동일한지 확인.
+   */
   @Test
   fun `상품 옵션 목록 조회 - 검색 O`() {
     // given
@@ -314,6 +475,19 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result.content[1].productOptionCount).isEqualTo(2)
   }
 
+  /**
+   * 상품에 속한 옵션 상세 조회
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 하나의 상품에 속한 각각의 상품 옵션들을 저장한다.
+   *    3. 파라미터로 제공할 저장된 상품 Sn 을 변수에 담는다.
+   *    4. 상품에 속한 옵션 상세 조회 메서드를 통해 상품에 속한 옵션 상세 조회 요청한다.
+   *    5. 결과로 주는 데이터와 미리 저장한 데이터가 동일한지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품의 옵션이 3개를 미리 저장하였지만 2개는 삭제된 값으로 저장하였기에 결과값의 사이즈가 1개인지 확인.
+   *    2. 결과값의 옵션 이름과 추가 금액이 저장된(삭제되지 않은 데이터)와 일치하는 지 확인.
+   */
   @Test
   fun `상품에 속한 옵션 상세 조회`() {
     // given
@@ -336,6 +510,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(result[0].additionalPrice).isEqualTo(saveProductOptions[2].additionalPrice)
   }
 
+  /**
+   * 상품에 속한 옵션 상세 조회 - 실패 시
+   * - given / when / then
+   *    1. 아무 상품도 저장하지 않는다.
+   *    2. 파라미터로 요청 할 없는 상품 Sn 을 변수에 담는다.
+   *    3. 상품에 속한 옵션 상세 조회 메서드를 통해 상품에 속한 옵션 상세 조회 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품에 속한 옵션 상세 조회 - 실패 시`() {
     // given
@@ -349,6 +534,22 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT.message)
   }
 
+  /**
+   * 상품에 속한 상품 옵션 수정 - 생성 및 수정
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 하나의 상품에 속한 각각의 상품 옵션들을 저장한다.
+   *    3. 파라미터로 제공할 저장된 상품 Sn 을 변수와 수정 요청 할 rqList 를 생성한다.
+   *    4. 상품에 속한 상품 옵션 수정 메서드를 통해 상품에 속한 상품 옵션 수정 요청한다.
+   *    5. 상품 옵션 데이터를 불러와 Rq 대로 수정 / 생성 되었는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 성공 메시지가 동일한지 확인.
+   *    2. 저장된 총 옵션 개수가 3개인지 확인.
+   *        - 미리 저장된 옵션은 3개 중 2개는 삭제된 값이며, Rq 로 2개 생성, 1개 수정 했기에 총 결과값은 3개
+   *    3. 각각의 저장된 상품 옵션의 옵션 sn, 이름, 추가 금액이 요청한 값들이랑 동일한지 확인.
+   *        - sn 은 수정된값이므로 미리 저장된 상품 옵션 Sn 값이랑 동일한지 확인 (생성된 것이 아닌 수정된게 맞는지 확인)
+   */
   @Test
   fun `상품에 속한 상품 옵션 수정 - 생성 및 수정`() {
     // given
@@ -379,6 +580,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(productOptions[2].additionalPrice).isEqualTo(rqList[1].additionalPrice)
   }
 
+  /**
+   * 상품에 속한 상품 옵션 수정 - 실패 시(상품 X)
+   * - given / when / then
+   *    1. 아무 상품도 저장하지 않는다.
+   *    2. 파라미터로 요청 할 없는 상품 Sn 과 임의의 RqList 를 생성한다.
+   *    3. 상품에 속한 상품 옵션 수정 메서드를 통해 상품에 속한 상품 옵션 수정 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품에 속한 상품 옵션 수정 - 실패 시(상품 X)`() {
     // given
@@ -397,6 +609,19 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT.message)
   }
 
+  /**
+   * 상품에 속한 상품 옵션 수정 - 실패 시(옵션 최대 개수 초과 시)
+   * - given / when / then
+   *    1. 하나의 상품을 미리 저장한다.
+   *    2. 상품에 속한 상품 옵션들을 2개는 삭제된 값 1개는 삭제되지 않은 값으로 미리 저장한다.
+   *    2. 파라미터로 요청 할 상품 Sn 과 RqList 에 생성할 3개의 값으로 생성한다.
+   *    3. 상품에 속한 상품 옵션 수정 메서드를 통해 상품에 속한 상품 옵션 수정 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 1개는 이미 저장되어 있고, 3개의 생성을 요청했기에 알맞는 Exception 이 발생했는지 확인. (Exception Check)
+   *        - 최대 3개만 저장 가능 (위에는 총 4개를 저장하려 했기에 실패)
+   */
   @Test
   fun `상품에 속한 상품 옵션 수정 - 실패 시(옵션 최대 개수 초과 시)`() {
     // given
@@ -423,6 +648,19 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.PRODUCT_OPTION_LIMIT_EXCEEDED.message)
   }
 
+  /**
+   * 상품에 속한 상품 옵션 개별 삭제 (Soft Delete)
+   * - given / when / then
+   *    1. 하나의 상품을 먼저 저장한다.
+   *    2. 하나의 상품에 속한 하나의 상품 옵션을 저장한다.
+   *    3. 파라미터로 제공할 저장된 상품 Sn 을 변수에 담는다.
+   *    4. 상품에 속한 상품 옵션 개별 삭제 메서드를 통해 상품에 속한 상품 옵션 개별 삭제 요청한다.
+   *    5. 상품 옵션 데이터를 불러와 isDelete = true 인지 확인 및 성공 메시지를 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 성공 메시지가 동일한지 확인.
+   *    2. 불러온 상품 옵션 데이터에서 isDelete = true 인지 확인.
+   */
   @Test
   fun `상품에 속한 상품 옵션 개별 삭제 (Soft Delete)`() {
     // given
@@ -443,6 +681,17 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(productOptions[0].isDelete).isTrue()
   }
 
+  /**
+   * 상품에 속한 상품 옵션 개별 삭제 - 실패 시
+   * - given / when / then
+   *    1. 아무 상품 옵션을 저장하지 않는다.
+   *    2. 파라미터로 요청 할 없는 상품 옵션 Sn을 변수에 담는다.
+   *    3. 상품에 속한 상품 옵션 개별 삭제 메서드를 통해 상품에 속한 상품 옵션 개별 삭제 요청한다.
+   *    4. 예외 처리된 Exception 이 알맞게 나왔는지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 상품 옵션이 없다는 실패 메시지가 결과값으로 주는 지 확인. (Exception Check)
+   */
   @Test
   fun `상품에 속한 상품 옵션 개별 삭제 - 실패 시`() {
     // given
@@ -456,6 +705,16 @@ class ProductServiceIntegrationTest @Autowired constructor(
     assertThat(message).isEqualTo(CommonExceptionCode.NOT_EXIST_PRODUCT_OPTION.message)
   }
 
+  /**
+   * 선택 옵션 리스트 조회
+   * - given / when / then
+   *    1. 선택 옵션 전체 조회하기 위해 미리 데이터를 저장한다.
+   *    2. 선택 옵션 리스트 조회 메서드를 통해 선택 옵션 리스트 조회 요청한다.
+   *    3. 응답한 결과값의 개수와 저장한 데이터의 개수가 동일한지 확인한다.
+   *
+   * - 테스트 확인
+   *    1. 응답한 데이터 개수가 저장된 데이터 개수(5개) 와 일치하는지 확인.
+   */
   @Test
   fun `선택 옵션 리스트 조회`() {
     // given
