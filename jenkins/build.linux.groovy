@@ -14,12 +14,6 @@ pipeline {
             }
         }
 
-        stage('Clean and Build') {
-            steps {
-                sh './gradlew clean build'
-            }
-        }
-
         stage('Build and Run with Docker Compose') {
             steps {
                 dir('./frankit') {
