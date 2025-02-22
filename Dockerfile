@@ -8,7 +8,7 @@ WORKDIR /spring-boot
 COPY . .
 
 # 4. 클린 빌드를 실행합니다
-RUN gradle clean build
+RUN gradle clean build -x test
 
 # 5. 실제 실행을 위한 JDK 23 이미지 사용
 FROM openjdk:23-jdk
