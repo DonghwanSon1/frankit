@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  frankit-service:
+    restart: on-failure
+    build: .
+    image: frankit-service:latest
+    container_name: frankit-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://54.180.131.108:3306/frankit  # AWS
+#      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/frankit  # Local
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
