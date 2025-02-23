@@ -1,7 +1,7 @@
 plugins {
 	kotlin("jvm") version "2.1.0"
 	kotlin("plugin.spring") version "2.1.0"
-	id("org.springframework.boot") version "3.4.2"
+	id("org.springframework.boot") version "3.3.4"
 	id("io.spring.dependency-management") version "1.1.7"
 	id ("org.flywaydb.flyway") version "8.5.13"
 	kotlin("plugin.jpa") version "2.1.0"
@@ -47,7 +47,7 @@ dependencies {
 	implementation ("org.flywaydb:flyway-mysql")
 
 	// Swagger
-	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
 	// H2
 	implementation("com.h2database:h2")
