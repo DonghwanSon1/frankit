@@ -1,5 +1,4 @@
 # frankit
-- Backend 개발자 손동환
 - Notion 을 통해 문서 정리 하였습니다
 
 - 미리보기
